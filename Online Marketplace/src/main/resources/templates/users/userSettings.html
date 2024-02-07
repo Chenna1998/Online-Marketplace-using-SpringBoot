@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: layoutHeader">
+</head>
+<div th:replace="layout :: mainLayout"></div>
+<h1>Your settings</h1>
+
+<ul>
+    <li><a th:href="@{/settings/payment}">Payment Methods</a></li>
+    <li><a th:href="@{/settings/personalinfo}">Change your personal data</a></li>
+    <li><a th:href="@{/settings/changepassword}">Change your password</a></li>
+    <li><a th:href="@{/logout}">Logout</a></li>
+</ul>
+</html>

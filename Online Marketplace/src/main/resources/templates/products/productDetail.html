@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: layoutHeader">
+</head>
+<div th:replace="layout :: mainLayout"></div>
+<div>
+    <div>
+        <form role="form" th:action="@{/cart/add/{id}(id = ${product.id})}"
+              method="POST"
+              th:object="${cartItem}">
+            <div class="form-group">
+                <div th:text="${product.id}" th:field="${product.id}"></div>
+                <div th:text="${product.name}"></div>
+                <div th:text="${#numbers.formatDecimal(product.price,0,2)}"></div>
+                <div th:text="${product.description}"></div>
+                <div th:if="${product.imageFileUrl}">
+                    <img id="product-image" th:src="${product.imageFileUrl}">
+                </div>
+                <label>Amount</label>
+                <select th:field="${cartItem.quantity}">
+                    <option th:each="number: ${#numbers.sequence(1,10)}" th:value="${number}"
+                            th:text="${number}"></option>
+                </select>
+                <button type="submit" class="btn btn-success">Add to Cart</button>
+
+            </div>
+            <a class="btn btn-primary" th:href="@{/products}">Back</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: layoutHeader">
+</head>
+<div th:replace="layout :: mainLayout"></div>
+<div th:fragment="Index">
+    <h1>Order Summary</h1>
+
+    <div th:if="${stripeCustomer}">
+        <p>Your stripe credentials will be used for this transaction.</p>
+    </div>
+    <div th:unless="${stripeCustomer}">
+        <span>No payment method found.</span>
+        <a th:href="@{/settings/stripe}">Pay with stripe</a>
+    </div>
+    <div th:unless="${#lists.isEmpty(cart.cartItem)}">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr scope="row" th:each="cartItem : ${cart.cartItem}">
+                <td><a th:href="@{~/products/{id}(id=${cartItem.product.id})}"
+                       th:text="${cartItem.product.name}">yes</a></td>
+
+                <td th:text="${cartItem.product.price}">10.00</td>
+                <td th:text="${cartItem.quantity}"></td>
+                <td>
+                    <a type="button" class="btn btn-danger"
+                       th:href="@{/cart/delete/{id}(id=${cartItem.id})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h1 th:text="'Order total: ' + ${#aggregates.sum(cart.cartItem.![total])}"></h1>
+
+        <div th:if="${stripeCustomer}">
+            <form method="POST" th:action="@{/checkout}">
+                <button type="submit" class="btn btn-primary">Complete order</button>
+            </form>
+        </div>
+    </div>
+</div>
